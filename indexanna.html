@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="img\policia.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --background: #faf7f5;
+    --foreground: #2e2320;
+    --card: #ffffff;
+    --primary: #8c2f39;
+    --primary-foreground: #fdf8f6;
+    --secondary: #f5e4e0;
+    --secondary-foreground: #4a2c28;
+    --muted-foreground: #8a7a74;
+    --destructive: #d64545;
+    --border: #ece2de;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Fira Sans", system-ui, sans-serif; background: var(--background); color: var(--foreground); }
+  .fonte-titulo { font-family: "DM Serif Display", Georgia, serif; }
+
+  /* ===== Topo (hero) ===== */
+  .topo {
+    background:
+      radial-gradient(ellipse at top right, #f7d9d2, transparent 60%),
+      linear-gradient(180deg, #f6ebe6, var(--background));
+  }
+  .nav { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; }
+  .logo { font-family: "DM Serif Display", serif; font-size: 26px; color: var(--primary); }
+  .hero { max-width: 1100px; margin: 0 auto; padding: 30px 24px 60px; }
+  .sobrelinha { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); }
+  h1 { font-family: "DM Serif Display", serif; font-size: 44px; line-height: 1.15; max-width: 700px; margin-top: 12px; }
+  .hero p { margin-top: 14px; max-width: 520px; color: var(--muted-foreground); font-size: 17px; }
+
+  /* ===== Botões de ligação ===== */
+  .botoes-ligar { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    border-radius: 999px; padding: 13px 22px; font-weight: 600; font-size: 15px;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: transform .1s ease, filter .1s ease, box-shadow .1s ease;
+  }
+  .btn-cheio { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 12px 40px -16px rgba(140,47,57,.45); }
+  .btn-borda { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: scale(.95); filter: brightness(.9); }
+
+  /* ===== Busca ===== */
+  .busca { max-width: 1100px; margin: -20px auto 0; background: var(--card); border-radius: 24px; padding: 20px; box-shadow: 0 12px 40px -16px rgba(140,47,57,.25); position: relative; }
+  .filtros { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: none; border-radius: 999px; padding: 9px 18px; font-size: 14px; font-weight: 500; background: var(--secondary); color: var(--secondary-foreground); cursor: pointer; transition: transform .1s ease, filter .1s ease; }
+  .chip:hover { filter: brightness(.97); }
+  .chip:active { transform: scale(.95); }
+  .chip.ativo { background: var(--primary); color: var(--primary-foreground); }
+  .linha-busca { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 10px; }
+  input[type=text] { flex: 1; min-width: 220px; height: 48px; border: 1px solid var(--border); border-radius: 14px; padding: 0 16px; font-size: 15px; font-family: inherit; }
+  .aviso-login { margin-top: 10px; font-size: 13px; color: var(--muted-foreground); }
+  .aviso-login a { color: var(--primary); }
+
+  /* ===== Mapa e resultados ===== */
+  .mapa-area { max-width: 1100px; margin: 24px auto 0; display: grid; grid-template-columns: 3fr 2fr; gap: 20px; padding: 0 24px; }
+  .mapa { height: 440px; border-radius: 24px; overflow: hidden; box-shadow: 0 12px 40px -16px rgba(140,47,57,.25); }
+  .mapa iframe { width: 100%; height: 100%; border: 0; }
+  .resultados { max-height: 440px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+  .resultado { background: var(--card); border-radius: 18px; padding: 16px; border: 1px solid var(--border); }
+  .tag { display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 700; background: var(--primary); color: var(--primary-foreground); }
+  .resultado h3 { margin-top: 8px; font-size: 16px; }
+  .resultado p { margin-top: 4px; font-size: 14px; color: var(--muted-foreground); }
+  .resultado a { color: var(--primary); font-size: 14px; }
+  @media (max-width: 900px) { .mapa-area { grid-template-columns: 1fr; } }
+
+  /* ===== Depoimentos ===== */
+  .depoimentos { max-width: 1100px; margin: 70px auto 0; padding: 0 24px 30px; }
+  .rotulo { display: flex; align-items: center; gap: 8px; color: var(--primary); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  h2 { font-family: "DM Serif Display", serif; font-size: 34px; margin-top: 8px; }
+  .grade { margin-top: 28px; display: grid; grid-template-columns: 2fr 1fr; gap: 28px; }
+  @media (max-width: 900px) { .grade { grid-template-columns: 1fr; } }
+  .lista { display: flex; flex-direction: column; gap: 16px; }
+  .card-depo { background: var(--card); border-radius: 24px; padding: 24px; box-shadow: 0 12px 40px -16px rgba(140,47,57,.2); }
+  .card-depo .texto { font-family: "DM Serif Display", serif; font-size: 18px; line-height: 1.5; }
+  .card-depo .quem { margin-top: 14px; font-size: 14px; color: var(--muted-foreground); display: flex; justify-content: space-between; align-items: center; }
+  .card-depo .quem strong { color: var(--foreground); }
+  .apagar { border: none; background: none; color: var(--destructive); cursor: pointer; font-size: 14px; text-decoration: underline; }
+  .form-box { background: var(--secondary); border-radius: 24px; padding: 24px; height: fit-content; }
+  .form-box h3 { font-family: "DM Serif Display", serif; font-size: 24px; }
+  .form-box .dica { margin-top: 6px; font-size: 13px; color: var(--muted-foreground); }
+  textarea, .form-box input { width: 100%; border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; font-size: 15px; font-family: inherit; margin-top: 10px; }
+  .btn-publicar { width: 100%; margin-top: 12px; }
+  .btn-publicar:disabled { opacity: .6; }
+
+  /* ===== Sair rápido ===== */
+  .sair-rapido { position: fixed; right: 16px; bottom: 16px; z-index: 50; background: var(--destructive); color: #fff; border-radius: 999px; padding: 12px 20px; font-weight: 600; text-decoration: none; box-shadow: 0 8px 24px rgba(0,0,0,.2); transition: transform .1s ease, filter .1s ease; }
+  .sair-rapido:hover { transform: translateY(-2px); }
+  .sair-rapido:active { transform: scale(.95); filter: brightness(.9); }
+
+  footer { text-align: center; padding: 30px 20px; font-size: 14px; color: var(--muted-foreground); border-top: 1px solid var(--border); margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<a class="sair-rapido" href="https://www.google.com">Sair rápido</a>
+
+<header class="topo">
+  <nav class="nav">
+    <span class="logo">Ello Connect</span>
+  </nav>
+  <section class="hero">
+    <p class="sobrelinha">Você não está sozinha</p>
+    <h1>Encontre a delegacia mais próxima, em qualquer lugar.</h1>
+    <p>Delegacias da Mulher e delegacias tradicionais no mapa, com endereço, telefone e rota.</p>
+    <div class="botoes-ligar">
+      <a class="btn btn-cheio" href="tel:180" onclick="ligar(event,'180','Central da Mulher')">📞 Ligue 180 · Central da Mulher</a>
+      <a class="btn btn-borda" href="tel:190" onclick="ligar(event,'190','Polícia Militar')">🛡 Emergência 190</a>
+    </div>
+  </section>
+</header>
+
+<main>
+  <!-- Busca -->
+  <div class="busca">
+    <div class="filtros">
+      <button class="chip ativo" onclick="escolher(this)">Todas</button>
+      <button class="chip" onclick="escolher(this)">Delegacia da Mulher</button>
+      <button class="chip" onclick="escolher(this)">Delegacia tradicional</button>
+    </div>
+    <form class="linha-busca" onsubmit="buscar(event)">
+      <input type="text" id="regiao" placeholder="Cidade, bairro ou endereço (ex.: Copacabana, Rio de Janeiro)">
+      <button class="btn btn-cheio" type="submit">🔎 Buscar</button>
+      <button class="btn btn-borda" type="button" onclick="minhaLocalizacao()">📍 Usar minha localização</button>
+    </form>
+    <p class="aviso-login">Em emergência, ligue 190. Para orientação, ligue 180 (gratuito, 24h).</p>
+  </div>
+
+  <!-- Mapa e resultados -->
+  <div class="mapa-area">
+    <div class="mapa">
+      <iframe src="https://maps.google.com/maps?q=delegacia%20da%20mulher&z=11&output=embed" loading="lazy"></iframe>
+    </div>
+    <div class="resultados" id="resultados">
+      <div class="resultado" style="border-style:dashed">
+        Os resultados aparecem aqui. Busque por uma região ou use sua localização.
+      </div>
+    </div>
+  </div>
+
+  <!-- Depoimentos -->
+  <section class="depoimentos">
+    <p class="rotulo">💜 Depoimentos</p>
+    <h2>Vozes de quem já passou por isso</h2>
+    <div class="grade">
+      <div class="lista" id="lista"></div>
+      <aside class="form-box">
+        <h3>Compartilhe sua história</h3>
+        <p class="dica">Seu relato pode encorajar outra mulher. Você pode ficar anônima. Não precisa de login.</p>
+        <form onsubmit="publicar(event)">
+          <input id="nome" maxlength="60" placeholder="Nome (opcional — padrão: Anônima)">
+          <input id="cidade" maxlength="80" placeholder="Cidade (opcional)">
+          <textarea id="texto" rows="5" required minlength="10" maxlength="1500" placeholder="Seu depoimento…"></textarea>
+          <button class="btn btn-cheio btn-publicar" type="submit">Publicar</button>
+        </form>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>Ello Connect · Em perigo, ligue 190. Para orientação, 180 (24h, gratuito).</footer>
+
+<script>
+/* ===== Botões de ligação =====
+   No celular: deixa o toque abrir a ligação.
+   No computador: copia o número e mostra um aviso. */
+function ligar(e, numero, nome) {
+  var celular = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  if (celular) return; // celular liga de verdade
+  e.preventDefault();
+  if (navigator.clipboard) navigator.clipboard.writeText(numero);
+  alert("Ligue " + numero + " — " + nome + "\nNúmero copiado. Disque pelo seu celular. Gratuito, 24h.");
+}
+
+/* ===== Busca (neste arquivo, abre o Google Maps com a região digitada) ===== */
+function escolher(botao) {
+  document.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("ativo"); });
+  botao.classList.add("ativo");
+}
+
+function buscar(e) {
+  e.preventDefault();
+  var regiao = document.getElementById("regiao").value.trim();
+  if (!regiao) return;
+  var tipo = document.querySelector(".chip.ativo").textContent;
+  var termo = tipo === "Delegacia da Mulher" ? "delegacia da mulher" : "delegacia";
+  if (tipo === "Todas") termo = "delegacia da mulher OR delegacia";
+  document.getElementById("resultados").innerHTML =
+    '<div class="resultado"><span class="tag">Busca</span><h3>' + termo + " em " + regiao +
+    '</h3><p>A busca completa (com mapa e lista de delegacias) funciona no site publicado.</p>' +
+    '<a target="_blank" rel="noreferrer" href="https://www.google.com/maps/search/' +
+    encodeURIComponent(termo + " " + regiao) + '">Ver no Google Maps</a></div>';
+}
+
+function minhaLocalizacao() {
+  if (!navigator.geolocation) { alert("Seu navegador não suporta localização."); return; }
+  navigator.geolocation.getCurrentPosition(function (p) {
+    window.open("https://www.google.com/maps/search/delegacia da mulher/@" +
+      p.coords.latitude + "," + p.coords.longitude + ",14z", "_blank");
+  }, function () {
+    alert("Não foi possível obter sua localização. Digite uma cidade ou bairro.");
+  });
+}
+
+/* ===== Depoimentos =====
+   Aqui eles ficam salvos no próprio navegador (localStorage).
+   No site publicado, ficam salvos no banco e todos veem. */
+var CHAVE = "depoimentos-Ello-Connect";
+
+var exemplos = [
+  { nome: "Ana P.", cidade: "São Paulo", texto: "Fui atendida com respeito e encontrei o apoio que precisava. Não deixe para depois — procurar ajuda foi a melhor decisão que tomei.", data: "20/10/2026" },
+  { nome: "Juliana", cidade: "Recife", texto: "Cheguei com medo e saí com um plano. A equipe me explicou cada passo e me acompanhou. Você não está sozinha.", data: "20/10/2026" },
+  { nome: "Anônima", cidade: "Belo Horizonte", texto: "Liguei no 180 de madrugada e alguém atendeu na hora. Só de saber que tinha para onde ir, eu já me senti mais forte.", data: "20/10/2026" }
+];
+
+function carregar() {
+  var salvos = [];
+  try { salvos = JSON.parse(localStorage.getItem(CHAVE) || "[]"); } catch (e) { salvos = []; }
+  return exemplos.concat(salvos);
+}
+
+function mostrar() {
+  var lista = document.getElementById("lista");
+  lista.innerHTML = "";
+  carregar().forEach(function (t, i) {
+    var card = document.createElement("article");
+    card.className = "card-depo";
+    var doUsuario = i >= exemplos.length; // os exemplos fixos não têm botão de apagar
+    card.innerHTML =
+      '<p class="texto">“' + t.texto + '”</p>' +
+      '<div class="quem"><span><strong>' + t.nome + "</strong>" +
+      (t.cidade ? " · " + t.cidade : "") + " · " + t.data + "</span>" +
+      (doUsuario ? '<button class="apagar" onclick="apagar(' + (i - exemplos.length) + ')">Apagar</button>' : "") +
+      "</div>";
+    lista.appendChild(card);
+  });
+}
+
+function publicar(e) {
+  e.preventDefault();
+  var texto = document.getElementById("texto").value.trim();
+  if (texto.length < 10) { alert("Escreva pelo menos 10 caracteres."); return; }
+  var nome = document.getElementById("nome").value.trim() || "Anônima";
+  var cidade = document.getElementById("cidade").value.trim();
+  var salvos = [];
+  try { salvos = JSON.parse(localStorage.getItem(CHAVE) || "[]"); } catch (err) { salvos = []; }
+  salvos.unshift({ nome: nome, cidade: cidade, texto: texto, data: new Date().toLocaleDateString("pt-BR") });
+  localStorage.setItem(CHAVE, JSON.stringify(salvos));
+  document.getElementById("texto").value = "";
+  mostrar();
+  alert("Obrigada por compartilhar 💜");
+}
+
+function apagar(i) {
+  var salvos = [];
+  try { salvos = JSON.parse(localStorage.getItem(CHAVE) || "[]"); } catch (e) { salvos = []; }
+  salvos.splice(i, 1);
+  localStorage.setItem(CHAVE, JSON.stringify(salvos));
+  mostrar();
+}
+
+mostrar();
+</script>
+</body>
+</html>
